@@ -19,6 +19,11 @@ app.use(
   }),
 );
 
+// Basic health check route for the root
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 // Routes
 app.use("/api/candidates", require("./routes/candidates"));
 app.use("/api/match", require("./routes/match"));
