@@ -9,7 +9,10 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*", // for dev; tighten this after deployment
+    origin: [
+      "http://localhost:5174", // local dev
+      "https://shortlisting-app.onrender.com", // production
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
   }),
