@@ -11,7 +11,7 @@ export default function Match() {
   const [loading, setLoading] = useState(false);
 
   const handleMatch = async (payload) => {
-    const res = await axios.post(`${API}/api/match`, payload);
+    const res = await axios.post(`/api/match`, payload);
     setResults(res.data);
     setAiResults([]);
   };
@@ -19,7 +19,7 @@ export default function Match() {
   const handleAIMatch = async (payload) => {
     setLoading(true);
     setAiResults([]);
-    const res = await axios.post(`${API}/api/ai/shortlist`, payload);
+    const res = await axios.post(`/api/ai/shortlist`, payload);
     setAiResults(res.data);
     setLoading(false);
   };

@@ -3,12 +3,12 @@ import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL;
 
-export default function CandidateList() {
+export default function CandidateList({ onEdit, onDeleted }) {
   const [candidates, setCandidates] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get(`${API}/api/candidates`).then((res) => setCandidates(res.data));
+    axios.get(`/api/candidates`).then((res) => setCandidates(res.data));
   }, []);
 
   const filtered = candidates.filter(
@@ -72,6 +72,48 @@ export default function CandidateList() {
                 {c.bio}
               </p>
             )}
+            
+            {/* Edit / Delete Actions */}
+            <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+              <button
+                onClick={() => onEdit(c)}
+                style={{
+                  flex: 1,
+                  background: "#4CAF50",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 12px",
+                  borderRadius: 4,
+                  cursor: "pointer"
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={async () => {
+                  if (window.confirm(`Are you sure you want to delete ${c.name}?`)) {
+                    try {
+                      await axios.delete(`/api/candidates/${c._id}`);
+                      if (onDeleted) onDeleted();
+                    } catch (error) {
+                      console.error("Delete error:", error);
+                      alert(`Error deleting candidate: ${error.response?.data?.error || error.message}`);
+                    }
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  background: "#f44336",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 12px",
+                  borderRadius: 4,
+                  cursor: "pointer"
+                }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
         {filtered.length === 0 && <p>No candidates found.</p>}
