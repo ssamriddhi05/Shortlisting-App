@@ -4,13 +4,14 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-// app.use(cors());
+
 app.use(express.json());
 
 app.use(
   cors({
     origin: [
-      "http://localhost:5174", // local dev
+      "http://localhost:5173", // local dev (standard vite port)
+      "http://localhost:5174", // local dev (fallback)
       "https://shortlisting-app.onrender.com", // production
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -28,8 +29,6 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     const port = process.env.PORT || 5001;
-    app.listen(port, () =>
-      console.log(`Server running on port ${port}`),
-    );
+    app.listen(port, () => console.log(`Server running on port ${port}`));
   })
   .catch((err) => console.error(err));
